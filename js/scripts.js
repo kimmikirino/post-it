@@ -85,9 +85,6 @@ function updateNote(form, title, noteBody, section, id) {
         e.stopImmediatePropagation(); 
         formEdit(form, id, 1);
     };
-    // form.addEventListener("click", function(e){ 
-        
-    // });
 
     notes = notes.map((note) => {
         if(note.id === id) {
