@@ -41,7 +41,10 @@ function createNote(form, title, noteBody, section) {
 }
 
 function removeNote(el, id) {
-    el.remove();
+    el.className = 'removed';
+    setTimeout(function() {
+        el.remove();
+    }, 50);
     notes = notes.filter(function (note) {
         return note.id !== id;
     });
