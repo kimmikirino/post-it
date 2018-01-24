@@ -15,6 +15,10 @@ function createElement(note, section) {
 
     // colocar o html de tudo dentro da secao
     section.innerHTML = section.innerHTML + formEdit;
+
+    setTimeout(function() {
+        section.lastElementChild.className = section.lastElementChild.className + " show";
+  }, 10);
 }
 
 function createNote(form, title, noteBody, section) {
@@ -72,10 +76,6 @@ const formEdit = function(form, id, type) {
 
     form.innerHTML = formEdit;
 
-}
-
-function updateList(el) {
-    el.remove();
 }
 
 function updateNote(form, title, noteBody, section, id) {

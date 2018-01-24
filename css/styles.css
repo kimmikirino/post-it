@@ -56,3 +56,19 @@
     flex-wrap: wrap;
     margin-top: 2rem;
 }
+
+.swing {
+    perspective: 100px;
+}
+
+.swing form {
+  opacity: 0;
+  transform: rotateX(-90deg);
+  transition: all 0.5s cubic-bezier(.36,-0.64,.34,1.76);
+}
+
+.swing form.show {
+  opacity: 1;
+  transform: none;
+  transition: all 0.5s cubic-bezier(.36,-0.64,.34,1.76);
+}
