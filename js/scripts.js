@@ -44,7 +44,7 @@ function removeNote(el, id) {
     el.className = 'removed';
     setTimeout(function() {
         el.remove();
-    }, 50);
+    }, 800);
     notes = notes.filter(function (note) {
         return note.id !== id;
     });
