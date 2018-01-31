@@ -34,7 +34,7 @@ var notas = {
     }
 };
 
-function atualizarSecao() {
+const atualizarSecao = () => {
     var conteudoSecao = "";
 
     // forEach, mapa, reduce
@@ -62,22 +62,22 @@ function atualizarSecao() {
     notas.secao.innerHTML = conteudoSecao;
 }
 
-function adicionarNota(inputTitulo, textareaTexto, formulario) {
+const adicionarNota = (inputTitulo, textareaTexto, formulario) => {
     notas.adiciona(inputTitulo.value, textareaTexto.value);
 
     formulario.reset();
 }
 
-function atualizaNota(inputTitulo, textareaTexto, posicao) {
+const atualizaNota = (inputTitulo, textareaTexto, posicao) => {
     notas.atualiza(inputTitulo.value, textareaTexto.value, posicao);
 }
 
-function removerNota(evento, posicao) {
+const removerNota = (evento, posicao) => {
     evento.stopPropagation();
     notas.remove(posicao);
 }
 
-function editaFormulario(posicao) {
+const editaFormulario = (posicao) => {
     notas.edita(posicao);
     return false;
 }
