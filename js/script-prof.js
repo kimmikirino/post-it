@@ -39,23 +39,24 @@ function atualizarSecao() {
     var conteudoSecao = "";
 
     // forEach, mapa, reduce
-    for (var posicao = 0; posicao < notas.contaItems; posicao++) {
-        if (notas.lista[posicao].editando) {
-            conteudoSecao += '<form class="note">'+
-                                '<input class="note__title" type="text" name="titulo" value="' + notas.lista[posicao].titulo + '" placeholder="Título">'+
-                                '<textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota...">' + notas.lista[posicao].texto +'</textarea>'+
-                                '<button class="note__control" type="button" onclick="atualizaNota(this.form.titulo, this.form.texto, this.form, ' + posicao +')">'+
-                                    'Concluído'+
-                                '</button>'+
-                             '</form>';
+    for (var posicao = 0; posicao < notas.contaItems(); posicao++) {
+        var notaAtual = notas.pegaNota(posicao);
+        if (notaAtual.editando) {
+            conteudoSecao += `<form class="note">
+                                <input class="note__title" type="text" name="titulo" value="${notaAtual.titulo}" placeholder="Título">
+                                <textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota...">${notaAtual.texto}</textarea>
+                                <button class="note__control" type="button" onclick="atualizaNota(this.form.titulo, this.form.texto, ${posicao})">
+                                    Atualizar
+                                </button>
+                             </form>`;
         } else {
-            conteudoSecao += '<form class="note" onclick="editaFormulario(' + posicao + ', this.parentElement)">'+
-                                '<button class="note__control" type="button" onclick="removerNota(event, ' + posicao + ', this.form.parentElement)">'+
-                                    '<i class="fa fa-times" aria-hidden="true"></i>'+
-                                '</button>'+
-                                '<h1 class="note__title">' + notas.lista[posicao].titulo + '</h1>'+
-                                '<p class="note__body">' + notas.lista[posicao].texto + '</p>'+
-                             '</form>';
+            conteudoSecao += `<form class="note" onclick="editaFormulario(${posicao}, this.parentElement)">
+                                <button class="note__control" type="button" onclick="removerNota(event, ${posicao}, this.form.parentElement)">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </button>
+                                <h1 class="note__title">${notaAtual.titulo}</h1>
+                                <p class="note__body">${notaAtual.texto}</p>
+                             </form>`;
         }
     }
 
@@ -68,7 +69,7 @@ function adicionarNota(inputTitulo, textareaTexto, formulario) {
     formulario.reset();
 }
 
-function atualizaNota(inputTitulo, textareaTexto, formulario, posicao) {
+function atualizaNota(inputTitulo, textareaTexto, posicao) {
     notas.atualiza(inputTitulo.value, textareaTexto.value, posicao);
 }
 
