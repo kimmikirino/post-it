@@ -1,9 +1,51 @@
 // a tela se atualizar sozinhanpm install babel-preset-env --save-dev
-var notas = {
+// class Notas {
+//     constructor(lista) {
+//         this.lista = lista;
+//     }
+
+//     adiciona(titulo, texto) {
+//         let nota = {
+//             titulo: titulo,
+//             texto: texto,
+//             editando: false
+//         };
+
+//         this.lista.push(nota);
+//         atualizarSecao();
+//     }
+
+//     remove(posicao) {
+//         this.lista.splice(posicao, 1);
+//         atualizarSecao();
+//     }
+
+//     edita(posicao) {
+//         this.lista.splice(posicao, 1);
+//         atualizarSecao();
+//     }
+
+//     atualiza(titulo, texto, posicao){
+//         this.lista[posicao].titulo = titulo;
+//         this.lista[posicao].texto = texto;
+//         this.lista[posicao].editando = false;
+//         atualizarSecao();
+//     }
+
+//     pegaNota(posicao) {
+//         return this.lista[posicao];
+//     }
+
+//     contaItems() {
+//         return this.lista.length;
+//     }
+// }
+
+const notas = {
     secao: document.getElementsByClassName('notes')[0],
     lista: [],
-    adiciona: function(titulo, texto) {
-        var nota = {
+    adiciona(titulo, texto){
+        let nota = {
             titulo: titulo,
             texto: texto,
             editando: false
@@ -12,34 +54,34 @@ var notas = {
         this.lista.push(nota);
         atualizarSecao();
     },
-    remove: function(posicao) {
+    remove(posicao) {
         this.lista.splice(posicao, 1);
         atualizarSecao();
     },
-    edita: function(posicao) {
+    edita(posicao) {
         this.lista[posicao].editando = true;
         atualizarSecao();
     },
-    atualiza: function(titulo, texto, posicao) {
+    atualiza(titulo, texto, posicao) {
         this.lista[posicao].titulo = titulo;
         this.lista[posicao].texto = texto;
         this.lista[posicao].editando = false;
         atualizarSecao();
-    }, 
-    pegaNota: function(posicao) {
+    },
+    pegaNota(posicao) {
         return this.lista[posicao];
     },
-    contaItems: function() {
-        return this.lista.length;
+    contaItems() {
+        return this.lista.length
     }
 };
 
 const atualizarSecao = () => {
-    var conteudoSecao = "";
+    let conteudoSecao = "";
 
     // forEach, mapa, reduce
-    for (var posicao = 0; posicao < notas.contaItems(); posicao++) {
-        var notaAtual = notas.pegaNota(posicao);
+    for (let posicao = 0; posicao < notas.contaItems(); posicao++) {
+        let notaAtual = notas.pegaNota(posicao);
         if (notaAtual.editando) {
             conteudoSecao += `<form class="note">
                                 <input class="note__title" type="text" name="titulo" value="${notaAtual.titulo}" placeholder="Título">
@@ -77,7 +119,4 @@ const removerNota = (evento, posicao) => {
     notas.remove(posicao);
 }
 
-const editaFormulario = (posicao) => {
-    notas.edita(posicao);
-    return false;
-}
+const editaFormulario = posicao => notas.edita(posicao);
