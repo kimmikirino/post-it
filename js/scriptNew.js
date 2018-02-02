@@ -1,50 +1,10 @@
-// a tela se atualizar sozinhanpm install babel-preset-env --save-dev
-// class Notas {
-//     constructor(lista) {
-//         this.lista = lista;
-//     }
+class notas {
+    constructor(secao) {
+        this.secao = secao;
+        this.lista = [];
+    }
 
-//     adiciona(titulo, texto) {
-//         let nota = {
-//             titulo: titulo,
-//             texto: texto,
-//             editando: false
-//         };
-
-//         this.lista.push(nota);
-//         atualizarSecao();
-//     }
-
-//     remove(posicao) {
-//         this.lista.splice(posicao, 1);
-//         atualizarSecao();
-//     }
-
-//     edita(posicao) {
-//         this.lista.splice(posicao, 1);
-//         atualizarSecao();
-//     }
-
-//     atualiza(titulo, texto, posicao){
-//         this.lista[posicao].titulo = titulo;
-//         this.lista[posicao].texto = texto;
-//         this.lista[posicao].editando = false;
-//         atualizarSecao();
-//     }
-
-//     pegaNota(posicao) {
-//         return this.lista[posicao];
-//     }
-
-//     contaItems() {
-//         return this.lista.length;
-//     }
-// }
-
-const notas = {
-    secao: document.getElementsByClassName('notes')[0],
-    lista: [],
-    adiciona(titulo, texto){
+    adiciona(titulo, texto) {
         let nota = {
             titulo: titulo,
             texto: texto,
@@ -53,28 +13,35 @@ const notas = {
 
         this.lista.push(nota);
         atualizarSecao();
-    },
+    }
+
     remove(posicao) {
         this.lista.splice(posicao, 1);
         atualizarSecao();
-    },
+    }
+
     edita(posicao) {
-        this.lista[posicao].editando = true;
+        this.lista.splice(posicao, 1);
         atualizarSecao();
-    },
-    atualiza(titulo, texto, posicao) {
+    }
+
+    atualiza(titulo, texto, posicao){
         this.lista[posicao].titulo = titulo;
         this.lista[posicao].texto = texto;
         this.lista[posicao].editando = false;
         atualizarSecao();
-    },
+    }
+
     pegaNota(posicao) {
         return this.lista[posicao];
-    },
-    contaItems() {
-        return this.lista.length
     }
-};
+
+    contaItems() {
+        return this.lista.length;
+    }
+}
+
+const notas = new ListaNotas(document.getElementsByClassName("notes")[0]);
 
 const atualizarSecao = () => {
     let conteudoSecao = "";
