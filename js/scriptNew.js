@@ -1,49 +1,85 @@
-class notas {
-    constructor(secao) {
-        this.secao = secao;
-        this.lista = [];
+class Nota {
+    constructor(titulo, texto) {
+        //modificadores visibilidade getters e setters
+        this._titulo = titulo;
+        this._texto = texto;
+        this._editando = false;
     }
 
-    adiciona(titulo, texto) {
-        let nota = {
-            titulo: titulo,
-            texto: texto,
-            editando: false
-        };
-
-        this.lista.push(nota);
-        atualizarSecao();
+    get titulo () {
+        return this._titulo;
     }
 
-    remove(posicao) {
-        this.lista.splice(posicao, 1);
-        atualizarSecao();
+    get texto() {
+        return this._texto;
     }
 
-    edita(posicao) {
-        this.lista.splice(posicao, 1);
-        atualizarSecao();
+    get editando() {
+        return this._editando;
     }
 
-    atualiza(titulo, texto, posicao){
-        this.lista[posicao].titulo = titulo;
-        this.lista[posicao].texto = texto;
-        this.lista[posicao].editando = false;
-        atualizarSecao();
+    set titulo(novoTitulo) {
+        if(novoTitulo !== null && novoTitulo.length > 5) {
+            this._titulo = novoTitulo;
+        } else {
+            alert('O título deve ter mais que 5 caracteres');
+        }
     }
 
-    pegaNota(posicao) {
-        return this.lista[posicao];
+    set texto(novoTexto) {
+        this._texto = novoTexto;
     }
 
-    contaItems() {
-        return this.lista.length;
+    set editando(estaEditando) {
+        this._editando = estaEditando;
     }
 }
 
-const notas = new ListaNotas(document.getElementsByClassName("notes")[0]);
 
-const atualizarSecao = () => {
+class Notas extends Array {
+    constructor() {
+        super();
+        this._secao = document.getElementsByClassName("notes")[0];
+        
+        //super = new Lista(); //underscore para identificar que é privado
+    }
+
+    push(titulo, texto) {
+        let nota = new Nota(titulo, texto);
+        super.push(nota);
+        console.log(super[0]);
+        atualizarSecao(this._secao);
+    }
+
+    splice(posicao) {
+        super.splice(posicao, 1);
+        atualizarSecao(this._secao);
+    }
+
+    edita(posicao) {
+        this[posicao].editando = true;
+        atualizarSecao(this._secao);
+    }
+
+    atualiza(titulo, texto, posicao){
+        this[posicao].titulo = titulo;
+        this[posicao].texto = texto;
+        this[posicao].editando = false;
+        atualizarSecao(this._secao);
+    }
+
+    pegaNota(posicao) {
+        return this[posicao];
+    }
+
+    contaItems() {
+        return super.length;
+    }
+}
+
+const notas = new Notas();
+
+const atualizarSecao = (secao) => {
     let conteudoSecao = "";
 
     // forEach, mapa, reduce
@@ -68,12 +104,11 @@ const atualizarSecao = () => {
         }
     }
 
-    notas.secao.innerHTML = conteudoSecao;
+    secao.innerHTML = conteudoSecao;
 }
 
 const adicionarNota = (inputTitulo, textareaTexto, formulario) => {
-    notas.adiciona(inputTitulo.value, textareaTexto.value);
-
+    notas.push(inputTitulo.value, textareaTexto.value);
     formulario.reset();
 }
 
@@ -83,7 +118,7 @@ const atualizaNota = (inputTitulo, textareaTexto, posicao) => {
 
 const removerNota = (evento, posicao) => {
     evento.stopPropagation();
-    notas.remove(posicao);
+    notas.splice(posicao);
 }
 
 const editaFormulario = posicao => notas.edita(posicao);
