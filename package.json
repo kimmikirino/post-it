@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "babel js -d lib"
+    "build": "babel js -d lib",
+    "start": "webpack --config webpack.config.js --watch"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,10 @@
   "homepage": "https://github.com/kimmikirino/post-it#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
-    "jest": "^22.1.4"
+    "jest": "^22.1.4",
+    "webpack": "^3.10.0"
   }
 }
