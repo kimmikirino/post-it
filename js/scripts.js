@@ -1,100 +1,116 @@
-var notes = [];
-var counter = 0;
+class Nota {
+    constructor(novoTitulo, novoTexto) {
+        // modificadores visibilidade
+        this._titulo = novoTitulo;
+        this._texto = novoTexto;
+        this._editando = false;
+    }
 
+    // getters/setters
+    get titulo() {
+        return this._titulo;
+    }
 
-function createElement(note, section) {
-    var edit = 1;
-    // criar uma variavel qu vai guardar o html de tds as notas que devem aparecer na tela
-    var formEdit = '<form class="note" onclick="formEdit(this, ' + note.id + ', 1)">';
-    formEdit += '<button class="note__control" type="button" onclick="removeNote(this.form, ' + note.id + ')">' +
-        '<i class="fa fa-times" aria-hidden="true"></i>' +
-        '</button>';
-    formEdit += '<h1 type="text" name="title"  class="note__title">' + note.title + '</h1>';
-    formEdit += '<p name="body" rows="5" class="note__body">' + note.body + '</p>';
-    formEdit += '</form>';
+    get texto() {
+        return this._texto;
+    }
 
-    // colocar o html de tudo dentro da secao
-    section.innerHTML = section.innerHTML + formEdit;
+    get editando() {
+        return this._texto;
+    }
 
-    setTimeout(function() {
-        section.lastElementChild.className = section.lastElementChild.className + " show";
-  }, 10);
+    set titulo(tituloAlterado) {
+        this._titulo = tituloAlterado;
+    }
+
+    set texto(textoAlterado) {
+        this._texto = textoAlterado;
+    }
+
+    set editando(editandoAlterado) {
+        this._editando = editandoAlterado;
+    }
 }
 
-function createNote(form, title, noteBody, section) {
-    counter++;
-    //criar uma variavel nota
-    var note = {
-    };
+class ListaNotas extends Array {
+    constructor() {
+        super();
+        this._secao = document.getElementsByClassName("notes")[0];
+    }
 
-    note['title'] = title.value;
-    note['body'] = noteBody.value;
-    note['id'] = counter;
-    // adicionar nota dentro da lista
-    notes.push(note);
+    push(novoTitulo, novoTexto) {
+        let nota = new Nota(novoTitulo, novoTexto);
+        super.push(nota);
+        atualizarSecao(this._secao);
+    }
 
-    //atualizar a seção de notas
-    createElement(note, section);
-    console.log(note);
-    //limpar o formulario
-    form.reset();
-}
+    splice(posicao, quantidade) {
+        super.splice(posicao, 1);
+        atualizarSecao(this._secao);
+    }
 
-function removeNote(el, id) {
-    el.className = 'removed';
-    setTimeout(function() {
-        el.remove();
-    }, 800);
-    notes = notes.filter(function (note) {
-        return note.id !== id;
-    });
-}
+    edita(posicao) {
+        this[posicao].editando = true;
+        atualizarSecao(this._secao);
+    }
 
-const formEdit = function(form, id, type) {
-    var note = {
-        id: id
-    };
-    var formEdit = '<button class="note__control" type="button" onclick="removeNote(this.form, ' + note.id + ')">' +
-                '<i class="fa fa-times" aria-hidden="true"></i>' +
-            '</button>';
+    salva(posicao, novoTitulo, novoTexto) {
+        this[posicao].titulo = novoTitulo;
+        this[posicao].texto = novoTexto;
+        this[posicao].editando = false;
+        atualizarSecao(this._secao);
+    }
 
-    if (type) {
-        form.removeAttribute('onclick');
-        form.onclick = null;
-        note.title = form.getElementsByTagName('h1')[0].innerText;
-        note.body = form.getElementsByTagName('p')[0].innerText;
-        
-        formEdit += '<input type="text" name="title"  class="note__title" value="' + note.title + '" />' +
-                    '<textarea name="body" rows="5" class="note__body" >' + note.body + '</textarea>' +
-                    '<button class="note__control" type="button" onclick="updateNote(this.form, this.form.title, this.form.body, this.form.nextElementSibling, ' + note.id + ')">' +
-                        'Atualizar' +
-                    '</button>';
-    } else {
-        note.title = form.title.value;
-        note.body = form.body.value;
+    pega(posicao) {
+        return this[posicao];
+    }
 
-        formEdit += '<h1 type="text" name="title"  class="note__title">' + note.title + '</h1>' + 
-                    '<p name="body" rows="5" class="note__body">' + note.body + '</p>';
-    } 
+    contaTotal() {
+        return this.length;
+    }
+};
 
-    form.innerHTML = formEdit;
+const listaNotas = new ListaNotas();
 
-}
+const atualizarSecao = secao => {
+    let conteudoSecao = "";
 
-function updateNote(form, title, noteBody, section, id) {
-    formEdit(form, id);
-    event.stopImmediatePropagation();
-    form.onclick = function(e) {
-        e.stopImmediatePropagation(); 
-        formEdit(form, id, 1);
-    };
-
-    notes = notes.map((note) => {
-        if(note.id === id) {
-            note.title = title.value;
-            note.body = noteBody.value;
+    for (let posicao = 0; posicao < listaNotas.contaTotal(); posicao++) {
+        let notaAtual = listaNotas.pega(posicao);
+        if (notaAtual.editando) {
+            conteudoSecao += `<form class="note">
+                                <input class="note__title" type="text" name="titulo" value="${notaAtual.titulo}" placeholder="Título">
+                                <textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota...">${notaAtual.texto}</textarea>
+                                <button class="note__control" type="button" onclick="adicionarNota(this.form.titulo, this.form.texto, this.form, ${posicao})">
+                                    Concluído
+                                </button>
+                              </form>`;
+        } else {
+            conteudoSecao += `<form class="note" onclick="editaFormulario(${posicao})">
+                                <button class="note__control" type="button" onclick="removerNota(event, ${posicao})">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </button>
+                                <h1 class="note__title">${notaAtual.titulo}</h1>
+                                <p class="note__body">${notaAtual.texto}</p>
+                              </form>`;
         }
+    }
 
-        return note;
-    });
+    secao.innerHTML = conteudoSecao;
+}
+
+const editaFormulario = posicao => listaNotas.edita(posicao);
+
+const adicionarNota = (inputTitulo, textareaTexto, formulario, posicao) => {
+    if (listaNotas.pega(posicao)) {
+        listaNotas.salva(posicao, inputTitulo.value, textareaTexto.value);
+    } else {
+        listaNotas.adiciona(inputTitulo.value, textareaTexto.value);
+        formulario.reset();
+    }
+}
+
+const removerNota = (evento, posicao) => {
+    evento.stopPropagation();
+    listaNotas.remove(posicao);
 }

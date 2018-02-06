@@ -1,6 +1,6 @@
-import notas from './scriptNew';
+import listaNotas from './scripts'
 
 test('testa se está adicionado item', () => {
-    notas.adiciona("Titulo teste", "Texto");
-    expect(notas.contaItems()).toBe(1);
+    listaNotas.adiciona("Titulo", "Texto");
+    expect(listaNotas.contaTotal()).toBe(1);
 });
