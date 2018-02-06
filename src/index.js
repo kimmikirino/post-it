@@ -13,6 +13,32 @@ window.atualizarSecao = secao => {
     for (let posicao = 0; posicao < listaNotas.contaTotal(); posicao++) {
         let notaAtual = listaNotas.pega(posicao);
         if (notaAtual.editando) {
+            let formularioNota = document.createElement('form');
+            formularioNota.setAttribute('class', 'note');
+
+            let inputTitulo = document.createElement('input');
+            inputTitulo.setAttribute('class', 'note__title');
+            inputTitulo.setAttribute('placeholder', 'Título');
+            inputTitulo.setAttribute('name', 'titulo');
+            inputTitulo.setAttribute('type', 'text');
+            inputTitulo.setAttribute('value', notaAtual.titulo);
+
+            let textArea = document.createElement('textarea');
+            textArea.setAttribute('class', 'note__body');
+            textArea.setAttribute('placeholder', 'Criar uma nota...');
+            textArea.setAttribute('name', 'texto');
+            textArea.value = notaAtual.texto;
+            //textArea.innerHTML = notaAtual.texto;
+
+            let btn = document.createElement('button');
+            btn.setAttribute('class', 'note__control');
+            btn.setAttribute('placeholder', 'Criar uma nota...');
+            btn.setAttribute('type', 'button');
+            btn.setAttribute('value', 'Concluído');
+            btn.addEventListener('click', () => {
+                window.adicionarNota(formularioNota, inputTitulo, textArea, posicao);
+            });
+
             conteudoSecao += `<form class="note">
                                 <input class="note__title" type="text" name="titulo" value="${notaAtual.titulo}" placeholder="Título">
                                 <textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota...">${notaAtual.texto}</textarea>

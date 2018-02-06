@@ -86,13 +86,43 @@ var listaNotas = new _lista2.default(observaMudancaLista);
 window.atualizarSecao = function (secao) {
     var conteudoSecao = "";
 
-    for (var posicao = 0; posicao < listaNotas.contaTotal(); posicao++) {
+    var _loop = function _loop(posicao) {
         var notaAtual = listaNotas.pega(posicao);
         if (notaAtual.editando) {
+            var formularioNota = document.createElement('form');
+            formularioNota.setAttribute('class', 'note');
+
+            var inputTitulo = document.createElement('input');
+            inputTitulo.setAttribute('class', 'note__title');
+            inputTitulo.setAttribute('placeholder', 'Título');
+            inputTitulo.setAttribute('name', 'titulo');
+            inputTitulo.setAttribute('type', 'text');
+            inputTitulo.setAttribute('value', notaAtual.titulo);
+
+            var textArea = document.createElement('textarea');
+            textArea.setAttribute('class', 'note__body');
+            textArea.setAttribute('placeholder', 'Criar uma nota...');
+            textArea.setAttribute('name', 'texto');
+            textArea.value = notaAtual.texto;
+            //textArea.innerHTML = notaAtual.texto;
+
+            var btn = document.createElement('button');
+            btn.setAttribute('class', 'note__control');
+            btn.setAttribute('placeholder', 'Criar uma nota...');
+            btn.setAttribute('type', 'button');
+            btn.setAttribute('value', 'Concluído');
+            btn.addEventListener('click', function () {
+                window.adicionarNota(formularioNota, inputTitulo, textArea, posicao);
+            });
+
             conteudoSecao += '<form class="note">\n                                <input class="note__title" type="text" name="titulo" value="' + notaAtual.titulo + '" placeholder="T\xEDtulo">\n                                <textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota...">' + notaAtual.texto + '</textarea>\n                                <button class="note__control" type="button" onclick="adicionarNota(this.form.titulo, this.form.texto, this.form, ' + posicao + ')">\n                                    Conclu\xEDdo\n                                </button>\n                              </form>';
         } else {
             conteudoSecao += '<form class="note" onclick="editaFormulario(' + posicao + ')">\n                                <button class="note__control" type="button" onclick="removerNota(event, ' + posicao + ')">\n                                    <i class="fa fa-times" aria-hidden="true"></i>\n                                </button>\n                                <h1 class="note__title">' + notaAtual.titulo + '</h1>\n                                <p class="note__body">' + notaAtual.texto + '</p>\n                              </form>';
         }
+    };
+
+    for (var posicao = 0; posicao < listaNotas.contaTotal(); posicao++) {
+        _loop(posicao);
     }
 
     secao.innerHTML = conteudoSecao;
