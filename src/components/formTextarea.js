@@ -4,11 +4,13 @@ function FormTextarea(props) {
     formTextarea.setAttribute('class', props.className);
     formTextarea.setAttribute('placeholder', props.placeholder);
     formTextarea.setAttribute('name', props.name);
-    formTextarea.value = props.value;
+    formTextarea.setAttribute('rows', props.rows);
 
-    if(props.readonly) {
+    if (props.readonly) {
         formTextarea.setAttribute('readonly', true);
     }
+
+    formTextarea.innerHTML = props.children;
 
     return formTextarea;
 }

@@ -1,5 +1,5 @@
 function FormButton(props) {
-    let formButton = document.createElement('textarea');
+    let formButton = document.createElement('button');
 
     formButton.setAttribute('class', props.className);
     formButton.setAttribute('placeholder', props.placeholder);

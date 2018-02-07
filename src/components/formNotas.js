@@ -67,12 +67,13 @@ function FormNotas(propriedades) {
     let props = {
         className: 'note',
         click: notaAtual.editando ? () => {} : () => editarFormulario(posicao),
-        children: [inputTitulo, textareaTexto, buttonConcluido]
+        children: [inputTitulo, textareaTexto]
     };
 
     if (notaAtual.editando) {
         let buttonRemover = criaButtonRemover(propriedades);
-        props.children = [buttonRemover].concat(props.children);
+        props.children.unshift(buttonRemover);
+        props.children.push(buttonConcluido);
     }
 
     let formNotas = new Form(props);
