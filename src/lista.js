@@ -36,6 +36,10 @@ class ListaNotas {
     contaTotal() {
         return this.listaNotas.length;
     }
+
+    pegaTodos() {
+        return this.listaNotas;
+    }
 };
 
 export default ListaNotas;

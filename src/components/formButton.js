@@ -1,16 +1,5 @@
-function FormButton(props) {
-    let formButton = document.createElement('button');
+import React from 'react';
 
-    formButton.setAttribute('class', props.className);
-    formButton.setAttribute('placeholder', props.placeholder);
-    formButton.setAttribute('name', props.name);
-    formButton.setAttribute('type', props.type);
-    formButton.setAttribute('value', props.value);
-    formButton.addEventListener('click', props.click);
-
-    formButton.innerHTML = props.children;
-
-    return formButton;
-}
+const FormButton = (props, children) => React.createElement('button', props, children)
 
 export default FormButton;
