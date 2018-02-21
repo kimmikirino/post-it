@@ -103,7 +103,13 @@ function FormNotas({notaAtual, posicao, adicionarNota, removerNota, editarFormul
         }
     }
 
-    return React.createElement(Form, props, children);
+    return (<Form {...props}>
+                {posicao !== undefined && notaCopiada.editando && buttonRemover}
+                {inputTitulo}
+                {textareaTexto}
+                {(posicao !== undefined || notaCopiada.editando) && buttonConcluido}
+            </Form>
+        )
 }
 
 export default FormNotas;

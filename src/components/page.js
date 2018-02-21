@@ -4,27 +4,25 @@ import SecaoNotas from './secaoNotas';
 import ListaNotas from '../lista';
 import Nota from '../nota';
 
-function montaFormNotas(listaNotas, posicao, adicionarNota, removerNota, editarFormulario) {
-    const props = {
-        key: posicao,
-        notaAtual: listaNotas.pega(posicao),
-        adicionarNota,
-        removerNota,
-        editarFormulario
-    };
+function montaFormNotas(adicionarNota) {
+    const props = { notaAtual: {}, adicionarNota };
+
     return React.createElement(FormNotas, props);
 }
 
 function montaSecao(listaNotas, adicionarNota, removerNota, editarFormulario) {
     const props = {
-        key: 'notes',
-        className: 'notes'
+        className: "notes",
+        notas: listaNotas.pegaTodas(),
+        adicionarNota,
+        removerNota,
+        editarFormulario
     };
 
-    const children = listaNotas.pegaTodos().map((notaAtual, posicao) => {
-        montaFormNotas(listaNotas, posicao, adicionarNota, removerNota, editarFormulario)
-    });
-    return React.createElement(SecaoNotas, props, children);
+    // const children = listaNotas.pegaTodos().map((notaAtual, posicao) => {
+    //     montaFormNotas(listaNotas, posicao, adicionarNota, removerNota, editarFormulario)
+    // });
+    return React.createElement(SecaoNotas, props);
 }
 
 class Page extends React.Component {
@@ -70,12 +68,12 @@ class Page extends React.Component {
             className: 'container'
         }
 
-        //let formNotas = montaFormNotas(this.state.listaNotas, this.adicionarNota, this.removerNota, this.editarFormulario );
+        let formNotas = montaFormNotas(this.adicionarNota);
         let secaoNotas = montaSecao(this.state.listaNotas, this.adicionarNota, this.removerNota, this.editarFormulario);
         
-        const children = [secaoNotas];
+        const children = [formNotas, secaoNotas];
 
-        return React.createElement('main', props, children)
+        return React.createElement('main', props, ...children)
     }
 }
 
